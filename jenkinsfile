@@ -24,12 +24,15 @@ pipeline {
                 bat 'npm run build'
             }
         }
-         stage('Run Application') {
+         
+        stage('Run Application') {
             steps {
                 echo 'Starting Calculator Development Server...'
-                bat 'npm run dev -- --host 127.0.0.1'
-            }
-        
+
+                bat '''
+                    @echo off
+                    npm run dev -- --host 127.0.0.1
+                '''
         }
         
     }
