@@ -1,0 +1,44 @@
+
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                echo 'Checking out URL Shortener source code'
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing project dependencies'
+                bat 'npm ci'
+            }
+        }
+
+        stage('Build Application') {
+            steps {
+                echo 'Building URL Shortener'
+                bat 'npm run build'
+            }
+        }
+
+        stage('Build Success') {
+            steps {
+                echo 'URL Shortener build completed successfully!'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'CI Pipeline failed. Check the console output.'
+        }
+    }
+}
