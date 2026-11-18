@@ -3,42 +3,39 @@ pipeline {
     agent any
 
     stages {
-
         stage('Checkout') {
             steps {
-                echo 'Checking out URL Shortener source code'
                 checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing project dependencies'
                 bat 'npm ci'
             }
         }
 
         stage('Build Application') {
             steps {
-                echo 'Caluculator build started'
                 bat 'npm run build'
             }
         }
 
-        stage('Build Success') {
+        stage('Start Application') {
             steps {
-                echo 'calculator build completed successfully!'
+                echo 'Starting Calculator application...'
+
+                bat '''
+                start "" /B cmd /c "npm run preview -- --host 127.0.0.1 --port 4173 > preview.log 2>&1"
+                '''
             }
         }
     }
 
     post {
         success {
-            echo 'CI Pipeline completed successfully!'
-        }
-
-        failure {
-            echo 'CI Pipeline failed. Check the console output.'
+            echo 'Build successful!'
+            echo 'Try opening http://localhost:4173/'
         }
     }
-}
+}   
