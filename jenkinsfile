@@ -20,14 +20,14 @@ pipeline {
 
         stage('Build Application') {
             steps {
-                echo 'Building URL Shortener'
+                echo 'Caluculator build started'
                 bat 'npm run build'
             }
         }
 
         stage('Build Success') {
             steps {
-                echo 'URL Shortener build completed successfully!'
+                echo 'calculator build completed successfully!'
             }
         }
     }
