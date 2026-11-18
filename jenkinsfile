@@ -3,39 +3,33 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
+                echo 'Checking out Calculator source code'
                 checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
+                echo 'Installing dependencies...'
                 bat 'npm ci'
             }
         }
 
         stage('Build Application') {
             steps {
+                echo 'Building Calculator...'
                 bat 'npm run build'
             }
         }
 
-        stage('Start Application') {
+        stage('Run Application') {
             steps {
-                echo 'Starting Calculator application...'
-
-                bat '''
-                start "" /B cmd /c "npm run preview -- --host 127.0.0.1 --port 4173 > preview.log 2>&1"
-                '''
+                echo 'Starting Calculator Development Server...'
+                bat 'npm run dev -- --host 127.0.0.1 --port 5173 --strictPort'
             }
         }
     }
-
-    post {
-        success {
-            echo 'Build successful!'
-            echo 'Try opening http://localhost:4173/'
-        }
-    }
-}   
+}
